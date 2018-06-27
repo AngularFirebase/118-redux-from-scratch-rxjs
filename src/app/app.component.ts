@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { AngularFirestore } from 'angularfire2/firestore';
-import * as firebase from 'firebase/app';
+import { Store, Action } from './store.service';
 
 @Component({
   selector: 'app-root',
@@ -8,11 +7,20 @@ import * as firebase from 'firebase/app';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(private afs: AngularFirestore) {
-    //   afs.collection('animals').snapshotChanges(
-    // ).subscribe(x => {
-    //   console.log(x)
-    // })
-    const fire = firebase.firestore().doc('animals/elephant');
+  spanish;
+  constructor(private store: Store) {
+    this.spanish = store.select('spanish.hola');
+  }
+
+  set() {
+    this.store.dispatch(new Action('SET', { hello: 'world' }));
+  }
+
+  update() {
+    this.store.dispatch(new Action('UPDATE', { spanish: { hola: 'mundo' } }));
+  }
+
+  delete() {
+    this.store.dispatch(new Action('DELETE', 'spanish'));
   }
 }
